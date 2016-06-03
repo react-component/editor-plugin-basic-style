@@ -8,14 +8,14 @@
     "react-editor-plugin-basic-style",
     "editor-plugin-basic-style"
   ],
-  "homepage": "https://github.com/react-component/editor-plugin-basic-style",
+  "homepage": "https://github.com/rc-editor/editor-plugin-basic-style",
   "author": "surgesoft@gmail.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-component/editor-plugin-basic-style.git"
+    "url": "https://github.com/rc-editor/editor-plugin-basic-style.git"
   },
   "bugs": {
-    "url": "https://github.com/react-component/editor-plugin-basic-style/issues"
+    "url": "https://github.com/rc-editor/editor-plugin-basic-style/issues"
   },
   "files": [
     "lib",
