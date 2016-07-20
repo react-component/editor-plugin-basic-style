@@ -38247,9 +38247,11 @@ webpackJsonp([0,1],[
 	
 	var _classnames2 = __webpack_require__(309);
 	
-	var classnames = _interopRequireWildcard(_classnames2);
+	var _classnames3 = _interopRequireDefault(_classnames2);
 	
 	var _rcEditorUtils = __webpack_require__(310);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -38368,7 +38370,7 @@ webpackJsonp([0,1],[
 	                    var _classnames;
 	
 	                    var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(callbacks.getEditorState());
-	                    var classNames = classnames((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-' + name, true), _defineProperty(_classnames, 'active', currentStyle.has(upperName)), _classnames));
+	                    var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-' + name, true), _defineProperty(_classnames, 'active', currentStyle.has(upperName)), _classnames));
 	                    return React.createElement('span', { onMouseDown: function onMouseDown() {
 	                            return toggleStyle(upperName);
 	                        }, className: classNames });
