@@ -1,6 +1,18 @@
 .editor-select {
   display: inline-block;
 }
+.alignLeft {
+  text-align: left;
+}
+.alignRight {
+  text-align: right;
+}
+.alignMiddle {
+  text-align: center;
+}
+.alignJustify {
+  text-align: justify;
+}
 @font-face {
   font-family: 'editoricon';
   src: url('//at.alicdn.com/t/font_1466643381_3569083.eot');
@@ -89,6 +101,9 @@
 .rc-editor-core-toolbar {
   background: #f4f4f4;
   padding: 6px;
+}
+.alignLeft {
+  color: red;
 }
 .rc-select {
   box-sizing: border-box;
