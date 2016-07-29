@@ -38721,7 +38721,8 @@ webpackJsonp([0,1],[
 	            var blockRenderMap = _defineProperty({}, '' + name, {
 	                element: function element(props) {
 	                    return React.createElement('div', _extends({}, props, { style: style }));
-	                }
+	                },
+	                style: style
 	            });
 	            var toggleBlockStyle = getToggleBlockStyleFunc(callbacks);
 	            return {
