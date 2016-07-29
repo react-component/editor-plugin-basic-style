@@ -103,7 +103,16 @@
   padding: 6px;
 }
 .alignLeft {
-  color: red;
+  text-align: left;
+}
+.alignRight {
+  text-align: right;
+}
+.alignMiddle {
+  text-align: center;
+}
+.alignJustify {
+  text-align: justify;
 }
 .rc-select {
   box-sizing: border-box;
