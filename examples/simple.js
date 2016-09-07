@@ -44361,6 +44361,7 @@ webpackJsonp([0,1],[
 	                fontSize: fontSize
 	            };
 	        }
+	        return {};
 	    }).reduce(Object.assign);
 	}
 	var FontSize = {
@@ -54607,6 +54608,7 @@ webpackJsonp([0,1],[
 	                        color: color
 	                    };
 	                }
+	                return {};
 	            }).reduce(Object.assign);
 	        }
 	        return {
