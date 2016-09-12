@@ -217,6 +217,8 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.reloadPlugins = function reloadPlugins() {
+	        var _this2 = this;
+	
 	        return this.plugins && this.plugins.size ? this.plugins.map(function (plugin) {
 	            //　如果插件有 callbacks 方法,则认为插件已经加载。
 	            if (plugin.callbacks) {
@@ -224,7 +226,8 @@ webpackJsonp([0,1],[
 	            }
 	            // 如果插件有 constructor 方法,则构造插件
 	            if (plugin.hasOwnProperty('constructor')) {
-	                return plugin.constructor(plugin.config);
+	                var pluginConfig = Object.assign(_this2.props.pluginConfig, plugin.config);
+	                return plugin.constructor(pluginConfig);
 	            }
 	            // else 无效插件
 	            console.warn('>> 插件: [', plugin.name, '] 无效。插件或许已经过期。');
@@ -285,6 +288,7 @@ webpackJsonp([0,1],[
 	        configStore.set('customStyleMap', customStyleMap);
 	        configStore.set('customBlockStyleMap', customBlockStyleMap);
 	        configStore.set('blockRenderMap', customBlockRenderMap);
+	        configStore.set('customStyleFn', this.customStyleFn.bind(this));
 	        this.setState({
 	            toolbarPlugins: toolbarPlugins,
 	            compositeDecorator: compositeDecorator
@@ -323,13 +327,13 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.initPlugins = function initPlugins() {
-	        var _this2 = this;
+	        var _this3 = this;
 	
 	        var enableCallbacks = ['getEditorState', 'setEditorState', 'getStyleMap', 'setStyleMap'];
 	        return this.getPlugins().map(function (plugin) {
 	            enableCallbacks.forEach(function (callbackName) {
 	                if (plugin.callbacks.hasOwnProperty(callbackName)) {
-	                    plugin.callbacks[callbackName] = _this2[callbackName].bind(_this2);
+	                    plugin.callbacks[callbackName] = _this3[callbackName].bind(_this3);
 	                }
 	            });
 	            return plugin;
@@ -345,12 +349,12 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.getEventHandler = function getEventHandler() {
-	        var _this3 = this;
+	        var _this4 = this;
 	
 	        var enabledEvents = ['onUpArrow', 'onDownArrow', 'handleReturn', 'onFocus', 'onBlur'];
 	        var eventHandler = {};
 	        enabledEvents.forEach(function (event) {
-	            eventHandler[event] = _this3.generatorEventHandler(event);
+	            eventHandler[event] = _this4.generatorEventHandler(event);
 	        });
 	        return eventHandler;
 	    };
@@ -360,7 +364,7 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.setEditorState = function setEditorState(editorState) {
-	        var _this4 = this;
+	        var _this5 = this;
 	
 	        var focusEditor = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 	
@@ -379,7 +383,7 @@ webpackJsonp([0,1],[
 	        if (!this.controlledMode) {
 	            this.setState({ editorState: newEditorState }, focusEditor ? function () {
 	                return setTimeout(function () {
-	                    return _this4.refs.editor.focus();
+	                    return _this5.refs.editor.focus();
 	                }, 100);
 	            } : noop);
 	        }
@@ -437,14 +441,14 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.generatorEventHandler = function generatorEventHandler(eventName) {
-	        var _this5 = this;
+	        var _this6 = this;
 	
 	        return function () {
 	            for (var _len2 = arguments.length, args = Array(_len2), _key4 = 0; _key4 < _len2; _key4++) {
 	                args[_key4] = arguments[_key4];
 	            }
 	
-	            return _this5.eventHandle.apply(_this5, [eventName].concat(args));
+	            return _this6.eventHandle.apply(_this6, [eventName].concat(args));
 	        };
 	    };
 	
@@ -500,6 +504,7 @@ webpackJsonp([0,1],[
 	    multiLines: true,
 	    plugins: [],
 	    prefixCls: 'rc-editor-core',
+	    pluginConfig: {},
 	    toolbars: [],
 	    spilitLine: 'enter'
 	};
@@ -43475,6 +43480,7 @@ webpackJsonp([0,1],[
 	        var blockMap = content.getBlockMap();
 	        var customStyleMap = configStore.get('customStyleMap') || {};
 	        var customBlockRenderMap = configStore.get('blockRenderMap') || {};
+	        var customStyleFn = configStore.get('customStyleFn');
 	        Object.assign(customStyleMap, DEFAULT_INLINE_STYLE);
 	        return blockMap.map(function (block) {
 	            var resultText = '<div>';
@@ -43522,6 +43528,8 @@ webpackJsonp([0,1],[
 	                                    inlineStyle = Object.assign(inlineStyle, currentStyle);
 	                                }
 	                            });
+	                            var costumedStyle = customStyleFn(styleSet);
+	                            inlineStyle = Object.assign(inlineStyle, costumedStyle);
 	                            return {
 	                                v: '<span style="' + getStyleText(inlineStyle) + '">' + encodedContent + '</span>'
 	                            };
@@ -44365,7 +44373,8 @@ webpackJsonp([0,1],[
 	    }).reduce(Object.assign);
 	}
 	var FontSize = {
-	    constructor: function constructor() {
+	    constructor: function constructor(config) {
+	        console.log('>> FontSize construtor', config);
 	        var callbacks = {
 	            getEditorState: _utils.noop,
 	            setEditorState: _utils.noop
@@ -44395,7 +44404,7 @@ webpackJsonp([0,1],[
 	                });
 	                return React.createElement(
 	                    _rcSelect2.default,
-	                    { onChange: changeSelect, style: { width: 80 }, value: Number(fontSizeNumber) },
+	                    { prefixCls: config.prefixCls, onChange: changeSelect, style: { width: 80 }, value: Number(fontSizeNumber) },
 	                    options
 	                );
 	            }
@@ -54591,7 +54600,7 @@ webpackJsonp([0,1],[
 	var colorArray = ['c00000', 'ff0000', 'ffc000', 'ffff00', '92d050', '00b050', '00b0f0', '0070c0', '002060', '7030a0'];
 	var PREFIX = 'FONTCOLOR_';
 	var fontColor = {
-	    constructor: function constructor() {
+	    constructor: function constructor(config) {
 	        var callbacks = {
 	            getEditorState: _utils.noop,
 	            setEditorState: _utils.noop
@@ -54631,7 +54640,7 @@ webpackJsonp([0,1],[
 	                });
 	                return React.createElement(
 	                    _rcSelect2.default,
-	                    { onChange: changeSelect, style: { width: 80 }, value: fontColor },
+	                    { prefixCls: config.prefixCls, onChange: changeSelect, style: { width: 80 }, value: fontColor },
 	                    options
 	                );
 	            }
