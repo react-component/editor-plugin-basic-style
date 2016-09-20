@@ -39381,7 +39381,7 @@ webpackJsonp([0,1],[
 	                });
 	                return React.createElement(
 	                    _rcSelect2.default,
-	                    { prefixCls: config.prefixCls, onChange: changeSelect, style: { width: 80 }, value: fontSizeNumber + '' },
+	                    { prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80 }, value: fontSizeNumber + '' },
 	                    options
 	                );
 	            }
@@ -49618,7 +49618,7 @@ webpackJsonp([0,1],[
 	                });
 	                return React.createElement(
 	                    _rcSelect2.default,
-	                    { prefixCls: config.prefixCls, onChange: changeSelect, style: { width: 80 }, value: fontColor },
+	                    { prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80 }, value: fontColor },
 	                    options
 	                );
 	            }
