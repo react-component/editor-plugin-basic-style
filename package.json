@@ -1,6 +1,6 @@
 {
   "name": "rc-editor-plugin-basic-style",
-  "version": "0.0.14",
+  "version": "0.1.5",
   "description": "editor-plugin-basic-style ui component for react",
   "keywords": [
     "react",
@@ -41,7 +41,6 @@
   "devDependencies": {
     "expect.js": "0.3.x",
     "pre-commit": "1.x",
-    "rc-editor-core": "^0.4.15-beta3",
     "rc-tools": "^5.5.12"
   },
   "pre-commit": [
@@ -49,13 +48,16 @@
   ],
   "peerDependencies": {
     "react-addons-test-utils": "0.15.x",
-    "react-dom": "0.15.x"
+    "react-dom": "15.x",
+    "rc-editor-core": "0.5.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "draft-js": "0.8.1",
     "immutable": "^3.8.1",
-    "rc-editor-utils": "0.0.3",
+    "rc-color-picker": "^1.1.0",
+    "rc-editor-core": "^0.5.3",
+    "rc-editor-utils": "0.0.4",
     "rc-select": "^6.4.6"
   }
 }

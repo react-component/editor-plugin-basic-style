@@ -35,6 +35,7 @@ const Editor = React.createClass({
       <EditorCore
         ref="editor"
         plugins={plugins}
+        pluginConfig={{prefixCls: 'rc'}}
         toolbars={toolbars}
         onChange={this.onChange}
         defaultValue={toEditorState('12312313123 [色眯眯] 123 13')}

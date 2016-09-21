@@ -6,14 +6,34 @@ import { getCurrentInlineStyle, replaceEntityData, getSelectedBlock, getToggleSt
 
 export function noop(args?: any): any {}
 
+export function getApplyFontStyleFunc(prefix, callbacks) {
+  return function applyStyle(styleName: string) {
+    const { getEditorState, setEditorState } = callbacks;
+    let editorState = getEditorState();
+    let contentState = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const currentStyle = getCurrentInlineStyle(editorState);
+
+    currentStyle.forEach( style => {
+      if (style.indexOf(`${prefix}`) !== -1) {
+        contentState = Modifier.removeInlineStyle(contentState, selection, style);
+      }
+    });
+    contentState = Modifier.applyInlineStyle(contentState, selection, styleName);
+
+    setEditorState(EditorState.push(editorState, contentState, 'apply-style'));
+  }
+}
+
 export function getToggleFontStyleFunc(prefix, callbacks) {
   return function toggleStyle(styleName: string) {
     const { getEditorState, setEditorState } = callbacks;
     let editorState = getEditorState();
     const currentStyle = getCurrentInlineStyle(editorState);
 
+    console.log('>> currentStyle', currentStyle.toSource());
     currentStyle.forEach( style => {
-      if (style.indexOf(`${prefix}_`) !== -1 && style !== styleName ) {
+      if (style.indexOf(`${prefix}`) !== -1 && style !== styleName ) {
         editorState = RichUtils.toggleInlineStyle(editorState, style);
       }
     });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import RcSelect from 'rc-select';
-import { Entity } from 'draft-js';
+import { Entity, DraftInlineStyle } from 'draft-js';
 import { noop, getToggleFontStyleFunc } from '../utils';
 import  editorUtils from 'rc-editor-utils';
 const { getCurrentInlineStyle, getCurrentEntity } = editorUtils;
@@ -10,17 +10,28 @@ declare module 'rc-select' {
 }
 const Option = RcSelect.Option;
 
-const sizeArray = [12, 14, 18, 24];
+const sizeArray = [];
+
+for (let i = 12; i < 24; i+=2) {
+  sizeArray.push(i);
+}
 const PREFIX = 'FONTSIZE_';
-const styleMap = {};
-sizeArray.forEach(fontSize => {
-  styleMap[`${PREFIX}_${fontSize}`] = {
-    fontSize,
-  };
-});
+
+function customStyleFn(styleSet: DraftInlineStyle) {
+   return styleSet.map(style => {
+     if (style.indexOf(PREFIX) !== -1) {
+       const fontSize = Number(style.substring(PREFIX.length));
+       return {
+         fontSize,
+       }
+     }
+     return {};
+   }).reduce(Object.assign);
+}
 
 const FontSize = {
-  constructor() {
+  constructor(config) {
+    console.log('>> FontSize construtor', config);
     const callbacks = {
       getEditorState: noop,
       setEditorState: noop,
@@ -28,23 +39,34 @@ const FontSize = {
 
     const toggleStyle = getToggleFontStyleFunc(PREFIX, callbacks);
 
-    function changeSelect(fontSize) {
-      toggleStyle(`${PREFIX}_${fontSize}`);
+    function changeSelect({key}) {
+      toggleStyle(`${PREFIX}${key}`);
     }
 
     return {
       name: 'fontSize',
       callbacks,
-      styleMap,
+      customStyleFn,
       component: (props) => {
         const editorState = callbacks.getEditorState();
         const currentStyle = getCurrentInlineStyle(editorState);
-        const currentFontSize = currentStyle.find( item => item.indexOf(`${PREFIX}_`) !== -1);
-        const fontSizeNumber = currentFontSize ? currentFontSize.substring(PREFIX.length + 1) : 16;
+        const currentFontSize = currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
+        const fontSizeNumber = currentFontSize ? currentFontSize.substring(PREFIX.length) : 16;
         const options = sizeArray.map( item =>
-          <Option key={item} value={item} style={{fontSize: item}}>{item}px</Option>
+          <Option key={item} value={item + ''} style={{fontSize: item}}>{item}px</Option>
         );
-        return <RcSelect onChange={changeSelect} style={{width: 80}} value={Number(fontSizeNumber)}>
+        const value = {
+          key: fontSizeNumber + '',
+          label: fontSizeNumber + 'px'
+        };
+
+        return <RcSelect
+          labelInValue
+          prefixCls={`${config.prefixCls}-select`}
+          onChange={changeSelect}
+          style={{width: 80}}
+          value={value}
+        >
           {options}
         </RcSelect>
       }
