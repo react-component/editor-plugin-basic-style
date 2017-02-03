@@ -44347,10 +44347,11 @@ webpackJsonp([0,1],[
 	            setEditorState = callbacks.setEditorState;
 	
 	        var editorState = getEditorState();
+	        var contentState = editorState.getCurrentContent();
 	        var selection = editorState.getSelection();
 	        var currentEntity = getCurrentEntity(editorState);
-	        var entityKey = _draftJs.Entity.create(entityType, entityMode, data);
-	        var replacedContent = _draftJs.Modifier.applyEntity(editorState.getCurrentContent(), selection, entityKey);
+	        var entityKey = contentState.createEntity(entityType, entityMode, data);
+	        var replacedContent = _draftJs.Modifier.applyEntity(contentState, selection, entityKey);
 	        return setEditorState(_draftJs.EditorState.push(editorState, replacedContent, 'toggle-block'));
 	    };
 	}
