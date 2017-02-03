@@ -154,7 +154,7 @@ export function inlineStyleComponentFactory(name: string, style: Object = {}) {
             [`editor-icon-${name}`]: true,
             'active': currentStyle.has(upperName)
           });
-          return <span onMouseDown={() => toggleStyle(upperName)} className={classNames} />
+          return <span onMouseDown={(e) => { toggleStyle(upperName); e.preventDefault() }} className={classNames} />
         }
       }
     },

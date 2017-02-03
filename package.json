@@ -1,6 +1,6 @@
 {
   "name": "rc-editor-plugin-basic-style",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "editor-plugin-basic-style ui component for react",
   "keywords": [
     "react",
