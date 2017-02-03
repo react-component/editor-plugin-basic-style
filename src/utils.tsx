@@ -68,13 +68,14 @@ export function getApplyEntityFunc(callbacks) {
   return function applyEntity(entityType: string, data: Object = {}, entityMode: string = 'MUTABLE') {
     const { getEditorState, setEditorState } = callbacks;
     const editorState = getEditorState();
+    const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const currentEntity = getCurrentEntity(editorState);
 
-    const entityKey = Entity.create(entityType, entityMode, data);
+    const entityKey = contentState.createEntity(entityType, entityMode, data);
 
     const replacedContent = Modifier.applyEntity(
-      editorState.getCurrentContent(),
+      contentState,
       selection,
       entityKey
     );
