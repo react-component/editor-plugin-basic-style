@@ -63,7 +63,10 @@ webpackJsonp([0,1],[
 	        pluginConfig: { prefixCls: 'rc' },
 	        toolbars: toolbars,
 	        onChange: this.onChange,
-	        defaultValue: (0, _rcEditorCore.toEditorState)('12312313123 [色眯眯] 123 13')
+	        defaultValue: (0, _rcEditorCore.toEditorState)('12312313123 [色眯眯] 123 13'),
+	        onBlur: function onBlur() {
+	          return console.log('onBlur');
+	        }
 	      })
 	    );
 	  }
@@ -353,7 +356,7 @@ webpackJsonp([0,1],[
 	    EditorCore.prototype.initPlugins = function initPlugins() {
 	        var _this3 = this;
 	
-	        var enableCallbacks = ['getEditorState', 'setEditorState', 'getStyleMap', 'setStyleMap'];
+	        var enableCallbacks = ['focus', 'getEditorState', 'setEditorState', 'getStyleMap', 'setStyleMap'];
 	        return this.getPlugins().map(function (plugin) {
 	            enableCallbacks.forEach(function (callbackName) {
 	                if (plugin.callbacks.hasOwnProperty(callbackName)) {
@@ -368,16 +371,17 @@ webpackJsonp([0,1],[
 	        var _this4 = this;
 	
 	        var editorState = this.state.editorState;
-	
+	        var focusedEditorState = _draftJs.EditorState.moveFocusToEnd(editorState);
 	        if (!editorState.getSelection().getHasFocus()) {
 	            this.setState({
-	                editorState: _draftJs.EditorState.moveFocusToEnd(editorState)
+	                editorState: focusedEditorState,
 	            }, function () {
 	                if (_this4.props.onFocus) {
 	                    _this4.props.onFocus(ev);
 	                }
 	            });
 	        }
+	        return focusedEditorState;
 	    };
 	
 	    EditorCore.prototype.getPlugins = function getPlugins() {
@@ -416,6 +420,7 @@ webpackJsonp([0,1],[
 	        if (this.props.onChange) {
 	            this.props.onChange(newEditorState);
 	        }
+	        console.log(' setEditorState', focusEditor);
 	        if (!this.controlledMode) {
 	            this.setState({ editorState: newEditorState }, focusEditor ? function () {
 	                return setTimeout(function () {
@@ -42577,7 +42582,7 @@ webpackJsonp([0,1],[
 	        var getEditorState = callbacks.getEditorState,
 	            setEditorState = callbacks.setEditorState;
 	
-	        var editorState = getEditorState();
+	        var editorState = getEditorState(true);
 	        var contentState = editorState.getCurrentContent();
 	        var selection = editorState.getSelection();
 	        var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(editorState);
@@ -42587,7 +42592,7 @@ webpackJsonp([0,1],[
 	            }
 	        });
 	        contentState = _draftJs.Modifier.applyInlineStyle(contentState, selection, styleName);
-	        setEditorState(_draftJs.EditorState.push(editorState, contentState, 'apply-style'));
+	        setEditorState(_draftJs.EditorState.push(editorState, contentState, 'apply-style'), true);
 	    };
 	}
 	function getToggleFontStyleFunc(prefix, callbacks) {
@@ -42595,7 +42600,7 @@ webpackJsonp([0,1],[
 	        var getEditorState = callbacks.getEditorState,
 	            setEditorState = callbacks.setEditorState;
 	
-	        var editorState = getEditorState();
+	        var editorState = getEditorState(true);
 	        var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(editorState);
 	        currentStyle.forEach(function (style) {
 	            if (style.indexOf('' + prefix) !== -1 && style !== styleName) {
@@ -54206,7 +54211,8 @@ webpackJsonp([0,1],[
 	    constructor: function constructor(config) {
 	        var callbacks = {
 	            getEditorState: _utils.noop,
-	            setEditorState: _utils.noop
+	            setEditorState: _utils.noop,
+	            focus: _utils.noop
 	        };
 	        var toggleStyle = (0, _utils.getToggleFontStyleFunc)(PREFIX, callbacks);
 	        function changeSelect(_ref) {
