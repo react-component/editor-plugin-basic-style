@@ -25,9 +25,10 @@ const SubScript = {
       }],
       component: (props) => {
         const editorState = callbacks.getEditorState();
+        const contentState = editorState.getCurrentContent();
         const currentEntityKey = getCurrentEntity(editorState);
-        const isSuperScript = currentEntityKey ? Entity.get(currentEntityKey).getType() === 'subscript' : false;
-        
+        const isSuperScript = currentEntityKey ? contentState.getEntity(currentEntityKey).getType() === 'subscript' : false;
+
         const classNames = classnames({
           ['editor-icon']: true,
           ['editor-icon-subscript']: true,

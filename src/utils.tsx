@@ -31,7 +31,6 @@ export function getToggleFontStyleFunc(prefix, callbacks) {
     let editorState = getEditorState();
     const currentStyle = getCurrentInlineStyle(editorState);
 
-    console.log('>> currentStyle', currentStyle.toSource());
     currentStyle.forEach( style => {
       if (style.indexOf(`${prefix}`) !== -1 && style !== styleName ) {
         editorState = RichUtils.toggleInlineStyle(editorState, style);
@@ -44,13 +43,13 @@ export function getToggleFontStyleFunc(prefix, callbacks) {
 }
 
 export function findEntities(entityType: string) {
-  return function findEntitiesFunc(contentBlock, callback) {
+  return function findEntitiesFunc(contentBlock, callback, contentState) {
     contentBlock.findEntityRanges(
       (character) => {
         const entityKey = character.getEntity();
         return (
           entityKey !== null &&
-          Entity.get(entityKey).getType() === entityType
+          contentState.getEntity(entityKey).getType() === entityType
         );
       },
       callback
@@ -87,11 +86,14 @@ export function getToggleEntityFunc(callbacks) {
   return function toggleEntity(entityType: string, data: Object = {}, entityMode: string = 'MUTABLE') {
     const { getEditorState, setEditorState } = callbacks;
     const editorState = getEditorState();
+    const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     let entityKey = null;
     const currentEntity = getCurrentEntity(editorState);
-    if (!currentEntity || Entity.get(currentEntity).getType() !== entityType) {
-      entityKey = Entity.create(entityType, entityMode, data);
+
+    if (!currentEntity || contentState.getEntity(currentEntity).getType() !== entityType) {
+      contentState.createEntity(entityType, entityMode, data);
+      entityKey = contentState.getLastCreatedEntityKey();
     }
     const replacedContent = Modifier.applyEntity(
       editorState.getCurrentContent(),

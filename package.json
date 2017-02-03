@@ -1,6 +1,6 @@
 {
   "name": "rc-editor-plugin-basic-style",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "editor-plugin-basic-style ui component for react",
   "keywords": [
     "react",
@@ -47,17 +47,19 @@
     "lint"
   ],
   "peerDependencies": {
-    "react-addons-test-utils": "0.15.x",
+    "react": "15.x",
+    "react-addons-test-utils": "15.x",
     "react-dom": "15.x",
-    "rc-editor-core": "0.5.0"
+    "draft-js": "~0.10.0",
+    "rc-editor-core": "0.6.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "draft-js": "0.8.1",
+    "draft-js": "~0.10.0",
     "immutable": "^3.8.1",
     "rc-color-picker": "^1.1.0",
-    "rc-editor-core": "^0.5.3",
-    "rc-editor-utils": "0.0.4",
+    "rc-editor-core": "~0.6.0",
+    "rc-editor-utils": "0.0.7",
     "rc-select": "^6.4.6"
   }
 }

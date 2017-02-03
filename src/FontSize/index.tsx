@@ -26,12 +26,11 @@ function customStyleFn(styleSet: DraftInlineStyle) {
        }
      }
      return {};
-   }).reduce(Object.assign);
+   }).reduce((prev, curr) => Object.assign(prev, curr));
 }
 
 const FontSize = {
   constructor(config) {
-    console.log('>> FontSize construtor', config);
     const callbacks = {
       getEditorState: noop,
       setEditorState: noop,
@@ -50,7 +49,7 @@ const FontSize = {
       component: (props) => {
         const editorState = callbacks.getEditorState();
         const currentStyle = getCurrentInlineStyle(editorState);
-        const currentFontSize = currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
+        const currentFontSize = currentStyle && currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
         const fontSizeNumber = currentFontSize ? currentFontSize.substring(PREFIX.length) : 16;
         const options = sizeArray.map( item =>
           <Option key={item} value={item + ''} style={{fontSize: item}}>{item}px</Option>

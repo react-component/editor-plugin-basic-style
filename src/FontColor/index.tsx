@@ -4,6 +4,7 @@ import ColorPicker from 'rc-color-picker';
 import { Entity, DraftInlineStyle } from 'draft-js';
 import { noop, getApplyFontStyleFunc } from '../utils';
 import  editorUtils from 'rc-editor-utils';
+import { OrderedSet } from 'immutable';
 const { getCurrentInlineStyle, getCurrentEntity } = editorUtils;
 import ColorPickerBtn from './ColorPickerBtn';
 
@@ -25,7 +26,7 @@ const fontColor = {
       applyStyle(`${PREFIX}${colorString}`);
     }
     function customStyleFn(styleSet: DraftInlineStyle) {
-      return styleSet.map(style => {
+       return styleSet.map(style => {
         if (style.indexOf(PREFIX) !== -1) {
           const color = '#' + style.substring(PREFIX.length);
           return {
@@ -33,7 +34,7 @@ const fontColor = {
           }
         }
         return {};
-      }).reduce(Object.assign);
+      }).reduce( (prev, curr) => Object.assign(prev, curr));
     }
     return {
       name: 'fontColor',
@@ -42,15 +43,8 @@ const fontColor = {
       component: (props) => {
         const editorState = callbacks.getEditorState();
         const currentStyle = getCurrentInlineStyle(editorState);
-        const currentFontColor = currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
+        const currentFontColor = currentStyle && currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
         const fontColor = currentFontColor ? currentFontColor.substring(PREFIX.length) : defaultFontColor;
-
-        console.log('>> currentFontColor', fontColor);
-        const classNames = classnames({
-          ['editor-icon']: true,
-          ['editor-icon-font-color']: true,
-        });
-
         return (
         <ColorPicker
           defaultColor={`#${defaultFontColor}`}
@@ -58,7 +52,7 @@ const fontColor = {
           color={`#${fontColor}`}
           onChange={changeSelect}
         >
-          <ColorPickerBtn classNames={classNames} />
+          <ColorPickerBtn />
         </ColorPicker>);
       }
     }
