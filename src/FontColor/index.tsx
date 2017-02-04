@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import ColorPicker from 'rc-color-picker';
+import ColorPicker from './ColorPickerPanel';
 import { Entity, DraftInlineStyle } from 'draft-js';
 import { noop, getApplyFontStyleFunc } from '../utils';
 import  editorUtils from 'rc-editor-utils';
@@ -8,7 +8,7 @@ import { OrderedSet } from 'immutable';
 const { getCurrentInlineStyle, getCurrentEntity } = editorUtils;
 import ColorPickerBtn from './ColorPickerBtn';
 
-import 'rc-color-picker/assets/index.css';
+import './index.less';
 
 const defaultFontColor = '000';
 const PREFIX = 'FONTCOLOR_';
@@ -23,7 +23,7 @@ const fontColor = {
 
     function changeSelect({ color }) {
       const colorString = color.substring(1);
-      applyStyle(`${PREFIX}${colorString}`);
+      applyStyle(`${PREFIX}${colorString}`, true);
     }
     function customStyleFn(styleSet: DraftInlineStyle) {
        return styleSet.map(style => {
@@ -43,6 +43,7 @@ const fontColor = {
       component: (props) => {
         const editorState = callbacks.getEditorState();
         const currentStyle = getCurrentInlineStyle(editorState);
+        console.log('>> currentStyle', editorState.getCurrentInlineStyle().toSource());
         const currentFontColor = currentStyle && currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
         const fontColor = currentFontColor ? currentFontColor.substring(PREFIX.length) : defaultFontColor;
         return (
@@ -52,7 +53,7 @@ const fontColor = {
           color={`#${fontColor}`}
           onChange={changeSelect}
         >
-          <ColorPickerBtn />
+          <ColorPickerBtn style={{backgroundColor: `#${fontColor}`}}/>
         </ColorPicker>);
       }
     }

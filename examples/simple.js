@@ -39,6 +39,7 @@ const Editor = React.createClass({
         toolbars={toolbars}
         onChange={this.onChange}
         defaultValue={toEditorState('12312313123 [色眯眯] 123 13')}
+        onBlur={() => console.log('onBlur')}
       />
     </div>);
   }

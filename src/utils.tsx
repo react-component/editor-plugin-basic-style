@@ -7,12 +7,21 @@ import { getCurrentInlineStyle, replaceEntityData, getSelectedBlock, getToggleSt
 export function noop(args?: any): any {}
 
 export function getApplyFontStyleFunc(prefix, callbacks) {
-  return function applyStyle(styleName: string) {
+  return function applyStyle(styleName: string, needFocus = false) {
     const { getEditorState, setEditorState } = callbacks;
     let editorState = getEditorState();
     let contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const currentStyle = getCurrentInlineStyle(editorState);
+    if (selection.isCollapsed()) {
+      currentStyle.forEach( style => {
+        if (style.indexOf(`${prefix}`) !== -1 && style !== styleName ) {
+          editorState = RichUtils.toggleInlineStyle(editorState, style);
+        }
+      });
+      editorState = RichUtils.toggleInlineStyle(editorState, styleName);
+      return setEditorState(editorState, true);
+    }
 
     currentStyle.forEach( style => {
       if (style.indexOf(`${prefix}`) !== -1) {
@@ -21,7 +30,7 @@ export function getApplyFontStyleFunc(prefix, callbacks) {
     });
     contentState = Modifier.applyInlineStyle(contentState, selection, styleName);
 
-    setEditorState(EditorState.push(editorState, contentState, 'apply-style'));
+    setEditorState(EditorState.push(editorState, contentState, 'apply-style'), needFocus);
   }
 }
 
