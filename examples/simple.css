@@ -25,6 +25,71 @@
   bottom: 5px;
   left: 6px;
 }
+.rc-editor-color-picker {
+  position: absolute;
+}
+.rc-editor-color-picker-panel {
+  border-radius: 4px;
+  box-shadow: 0 1px 5px #ccc;
+  border: 1px solid #ccc;
+  padding: 8px;
+  background-color: #ffffff;
+  overflow-y: visible;
+  z-index: 1001;
+  width: auto;
+  position: absolute;
+  padding: 5px;
+  font-size: 12px;
+}
+.rc-editor-color-picker-panel ul,
+.rc-editor-color-picker-panel li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rc-editor-color-picker-panel li {
+  display: inline-block;
+}
+.rc-editor-color-picker-first-row,
+.rc-editor-color-picker-last-row,
+.rc-editor-color-picker-compactrow {
+  width: auto;
+}
+.rc-editor-color-picker-first-row,
+.rc-editor-color-picker-last-row {
+  margin: 6px 0;
+}
+.rc-editor-color-picker-color-auto li,
+.rc-editor-color-picker-color-auto a {
+  display: block;
+}
+.rc-editor-color-picker-color-auto a:hover {
+  background-color: #D5E1F2;
+}
+.rc-editor-color-picker-color-auto a canvas {
+  margin-bottom: -3px;
+  margin-right: 5px;
+}
+.rc-editor-color-picker-cell {
+  padding: 0px 0px 0px 2px !important;
+}
+.rc-editor-color-picker-cell a {
+  cursor: pointer;
+  outline: none;
+}
+.rc-editor-color-picker-cell a:focus canvas,
+.rc-editor-color-picker-cell a:hover canvas {
+  border-color: #0095cc;
+}
+.rc-editor-color-picker-cell .rc-editor-color-picker-celldiv {
+  width: 11px;
+  height: 11px;
+  border-style: solid;
+  border-color: #e1e1e1;
+  padding: 1px;
+  border-width: 1px;
+  outline: none;
+}
 @font-face {
   font-family: 'editoricon';
   src: url('//at.alicdn.com/t/font_1466643381_3569083.eot');
@@ -125,71 +190,6 @@
 }
 .alignJustify {
   text-align: justify;
-}
-.rc-color-picker {
-  position: absolute;
-}
-.color-picker-panel {
-  border-radius: 4px;
-  box-shadow: 0 1px 5px #ccc;
-  border: 1px solid #ccc;
-  padding: 8px;
-  background-color: #ffffff;
-  overflow-y: visible;
-  z-index: 1001;
-  width: auto;
-  position: absolute;
-  padding: 5px;
-  font-size: 12px;
-}
-.color-picker-panel .color-picker-first-row,
-.color-picker-panel .color-picker-last-row,
-.color-picker-panel .color-picker-compactrow {
-  width: auto;
-}
-.color-picker-panel .color-picker-first-row,
-.color-picker-panel .color-picker-last-row {
-  margin: 6px 0;
-}
-.color-picker-panel .color-picker-color-auto li,
-.color-picker-panel .color-picker-color-auto a {
-  display: block;
-}
-.color-picker-panel .color-picker-color-auto a:hover {
-  background-color: #D5E1F2;
-}
-.color-picker-panel .color-picker-color-auto a canvas {
-  margin-bottom: -3px;
-  margin-right: 5px;
-}
-.color-picker-panel ul,
-.color-picker-panel li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.color-picker-panel li {
-  display: inline-block;
-}
-.color-picker-panel .color-picker-cell {
-  padding: 0px 0px 0px 2px;
-}
-.color-picker-panel .color-picker-cell a {
-  cursor: pointer;
-  outline: none;
-}
-.color-picker-panel .color-picker-cell a:focus canvas,
-.color-picker-panel .color-picker-cell a:hover canvas {
-  border-color: #0095cc;
-}
-.color-picker-panel .color-picker-cell .color-picker-celldiv {
-  width: 11px;
-  height: 11px;
-  border-style: solid;
-  border-color: #e1e1e1;
-  padding: 1px;
-  border-width: 1px;
-  outline: none;
 }
 .rc-select {
   box-sizing: border-box;
