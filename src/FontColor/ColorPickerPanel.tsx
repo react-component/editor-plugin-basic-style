@@ -32,7 +32,7 @@ export default class ColorPickerPanel extends React.Component<any, any> {
     onChange: noop,
     onOpen: noop,
     onClose: noop,
-    prefixCls: 'rc-color-picker',
+    prefixCls: 'rc-editor',
     children: <span className="rc-color-picker-trigger"/>,
     placement: 'topLeft',
     style: {},
@@ -88,9 +88,9 @@ export default class ColorPickerPanel extends React.Component<any, any> {
 
   renderColorPickerCell = (color, idx, text = '', ele = 'li') => {
     const Ele = ele;
-    return <Ele className="color-picker-cell" key={idx}>
+    return <Ele className={`${this.props.prefixCls}-color-picker-cell`} key={idx}>
       <a tabIndex={0} onMouseDown={(e) => { this.pickColor(color, true); e.preventDefault(); }}>
-        <canvas className="color-picker-celldiv" ref={(ele) => this._canvas[color] = ele}></canvas>
+        <canvas className={`${this.props.prefixCls}-color-picker-celldiv`} ref={(ele) => this._canvas[color] = ele}></canvas>
         {text}
       </a>
     </Ele>
@@ -98,24 +98,24 @@ export default class ColorPickerPanel extends React.Component<any, any> {
 
   getPickerElement() {
     if (!this._pickerElement) {
-      this._pickerElement = <div className="color-picker-panel" ref={(ele) => this.pickerPanelInstance = ele}>
-        <div className="color-picker-color-auto" onMouseDown={this.reset} >
+      this._pickerElement = <div className={`${this.props.prefixCls}-color-picker-panel`} ref={(ele) => this.pickerPanelInstance = ele}>
+        <div className={`${this.props.prefixCls}-color-picker-color-auto`} onMouseDown={this.reset} >
           <ul>{this.renderColorPickerCell('#000', 0, '自动')}</ul>
         </div>
-        <div className="color-picker-first-row">
+        <div className={`${this.props.prefixCls}-color-picker-first-row`}>
           <ul>{newArray(10, (_, idx) => this.renderColorPickerCell(`#${ColorSet[idx]}`, idx + 1))}</ul>
         </div>
         <table>
           <tbody>
           {newArray(5, (_, row) =>
-            <tr className="color-picker-compactrow" key={row}>
+            <tr className={`${this.props.prefixCls}-color-picker-compactrow`} key={row}>
               {newArray(10, (_, idx) => this.renderColorPickerCell(`#${ColorSet[idx + (row + 1) * 10]}`, (row * 10 ) + idx + 1, null,  'td'))}
             </tr>)
           }
           </tbody>
         </table>
         <span>标准颜色</span>
-        <div className="color-picker-last-row">
+        <div className={`${this.props.prefixCls}-color-picker-last-row`}>
           <ul>{newArray(10, (_, idx) => this.renderColorPickerCell(`#${ColorSet[idx + 60]}`, idx + 1))}</ul>
         </div>
       </div>;
@@ -156,7 +156,7 @@ export default class ColorPickerPanel extends React.Component<any, any> {
           popupTransitionName={transitionName}
           popupVisible={this.state.open}
           onPopupVisibleChange={this.onVisibleChange}
-          prefixCls={prefixCls}
+          prefixCls={`${prefixCls}-color-picker`}
         >
           {children}
         </Trigger>

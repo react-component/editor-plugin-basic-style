@@ -8,8 +8,6 @@ import { OrderedSet } from 'immutable';
 const { getCurrentInlineStyle, getCurrentEntity } = editorUtils;
 import ColorPickerBtn from './ColorPickerBtn';
 
-import './index.less';
-
 const defaultFontColor = '000';
 const PREFIX = 'FONTCOLOR_';
 const fontColor = {
@@ -43,11 +41,11 @@ const fontColor = {
       component: (props) => {
         const editorState = callbacks.getEditorState();
         const currentStyle = getCurrentInlineStyle(editorState);
-        console.log('>> currentStyle', editorState.getCurrentInlineStyle().toSource());
         const currentFontColor = currentStyle && currentStyle.find( item => item.indexOf(`${PREFIX}`) !== -1);
         const fontColor = currentFontColor ? currentFontColor.substring(PREFIX.length) : defaultFontColor;
         return (
         <ColorPicker
+          prefixCls={`${config.prefixCls}-editor`}
           defaultColor={`#${defaultFontColor}`}
           animation="slide-up"
           color={`#${fontColor}`}

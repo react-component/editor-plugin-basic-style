@@ -1,4 +1,4 @@
-@zero: 0;
+@editorPrefix: rc-editor;
 
 .editor-select {
   display: inline-block;
@@ -30,5 +30,79 @@
     position: absolute;
     bottom: 5px;
     left: 6px;
+  }
+}
+
+.@{editorPrefix} {
+  &-color-picker {
+    position: absolute;
+  }
+
+  &-color-picker-panel {
+    border-radius: 4px;
+    box-shadow: 0 1px 5px #ccc;
+    border: 1px solid #ccc;
+    padding: 8px;
+    background-color: #ffffff;
+    overflow-y: visible;
+    z-index: 1001;
+    width: auto;
+    position: absolute;
+    padding: 5px;
+    font-size: 12px;
+
+    ul, li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      display: inline-block;
+    }
+  }
+
+  &-color-picker-first-row, &-color-picker-last-row, &-color-picker-compactrow {
+    width: auto;
+  }
+
+  &-color-picker-first-row, &-color-picker-last-row {
+    margin: 6px 0;
+  }
+
+  &-color-picker-color-auto {
+    li, a{
+      display: block;
+    }
+    a:hover {
+      background-color: #D5E1F2;
+    }
+    a canvas {
+      margin-bottom: -3px;
+      margin-right: 5px;
+    }
+  }
+
+  &-color-picker-cell {
+    padding: 0px 0px 0px 2px !important;
+    a {
+      cursor: pointer;
+      outline: none;
+      &:focus, &:hover {
+        canvas {
+          border-color: #0095cc;
+        }
+      }
+    }
+
+    .@{editorPrefix}-color-picker-celldiv {
+      width: 11px;
+      height: 11px;
+      border-style: solid;
+      border-color: #e1e1e1;
+      padding: 1px;
+      border-width: 1px;
+      outline: none;
+    }
   }
 }
