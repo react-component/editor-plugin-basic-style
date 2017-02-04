@@ -356,7 +356,7 @@ webpackJsonp([0,1],[
 	    EditorCore.prototype.initPlugins = function initPlugins() {
 	        var _this3 = this;
 	
-	        var enableCallbacks = ['getEditorState', 'setEditorState', 'getStyleMap', 'setStyleMap', 'nextTicksetEditorState'];
+	        var enableCallbacks = ['focus', 'getEditorState', 'setEditorState', 'getStyleMap', 'setStyleMap'];
 	        return this.getPlugins().map(function (plugin) {
 	            enableCallbacks.forEach(function (callbackName) {
 	                if (plugin.callbacks.hasOwnProperty(callbackName)) {
@@ -367,22 +367,32 @@ webpackJsonp([0,1],[
 	        });
 	    };
 	
+	    EditorCore.prototype.focusEditor = function focusEditor(ev) {
+	        this.refs.editor.focus(ev);
+	        if (this.props.onFocus) {
+	            this.props.onFocus(ev);
+	        }
+	    };
+	
 	    EditorCore.prototype.focus = function focus(ev) {
 	        var _this4 = this;
 	
-	        var editorState = this.state.editorState;
+	        var target = ev.target;
+	        if (target === this._editorWrapper) {
+	            var editorState = this.state.editorState;
 	
-	        var focusedState = _draftJs.EditorState.moveFocusToEnd(editorState);
-	        if (!editorState.getSelection().getHasFocus()) {
-	            this.setState({
-	                editorState: focusedState
-	            }, function () {
-	                if (_this4.props.onFocus) {
-	                    _this4.props.onFocus(ev);
+	            var selection = editorState.getSelection();
+	            if (!selection.getHasFocus()) {
+	                if (selection.isCollapsed()) {
+	                    return this.setState({
+	                        editorState: _draftJs.EditorState.moveFocusToEnd(editorState)
+	                    }, function () {
+	                        _this4.focusEditor(ev);
+	                    });
 	                }
-	            });
+	            }
 	        }
-	        return focusedState;
+	        this.focusEditor(ev);
 	    };
 	
 	    EditorCore.prototype.getPlugins = function getPlugins() {
@@ -401,11 +411,6 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.getEditorState = function getEditorState() {
-	        var doFocus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-	
-	        if (doFocus) {
-	            return this.focus();
-	        }
 	        return this.state.editorState;
 	    };
 	
@@ -414,12 +419,10 @@ webpackJsonp([0,1],[
 	
 	        var focusEditor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
-	        var newEditorState = editorState;
-	        if (this._nextTickEditorState) {
-	            console.log('>> _nextTickEditorState', this._nextTickEditorState);
-	            newEditorState = this._nextTickEditorState;
-	            this._nextTickEditorState = null;
+	        if (!editorState.getSelection().get('hasFocus')) {
+	            console.log(editorState.getSelection().toSource());
 	        }
+	        var newEditorState = editorState;
 	        this.getPlugins().forEach(function (plugin) {
 	            if (plugin.onChange) {
 	                var updatedEditorState = plugin.onChange(newEditorState);
@@ -437,14 +440,6 @@ webpackJsonp([0,1],[
 	                    return _this6.refs.editor.focus();
 	                }, 100);
 	            } : noop);
-	        }
-	    };
-	
-	    EditorCore.prototype.nextTicksetEditorState = function nextTicksetEditorState(editorState) {
-	        console.log('>> nextTicksetEditorState', editorState);
-	        var focusEditor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-	        if (editorState) {
-	            this._nextTickEditorState = editorState;
 	        }
 	    };
 	
@@ -541,6 +536,8 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.render = function render() {
+	        var _this8 = this;
+	
 	        var _props2 = this.props,
 	            prefixCls = _props2.prefixCls,
 	            toolbars = _props2.toolbars,
@@ -553,7 +550,9 @@ webpackJsonp([0,1],[
 	        var blockRenderMap = configStore.get('blockRenderMap');
 	        var eventHandler = this.getEventHandler();
 	        var Toolbar = toolbar.component;
-	        return React.createElement("div", { style: style, className: prefixCls + '-editor', onClick: this.focus.bind(this) }, React.createElement(Toolbar, { editorState: editorState, prefixCls: prefixCls, className: prefixCls + '-toolbar', plugins: toolbarPlugins, toolbars: toolbars }), React.createElement("div", { className: prefixCls + '-editor-wrapper', style: style, onClick: function onClick(ev) {
+	        return React.createElement("div", { style: style, className: prefixCls + '-editor', onClick: this.focus.bind(this) }, React.createElement(Toolbar, { editorState: editorState, prefixCls: prefixCls, className: prefixCls + '-toolbar', plugins: toolbarPlugins, toolbars: toolbars }), React.createElement("div", { className: prefixCls + '-editor-wrapper', ref: function ref(ele) {
+	                return _this8._editorWrapper = ele;
+	            }, style: style, onClick: function onClick(ev) {
 	                return ev.preventDefault();
 	            } }, React.createElement(_draftJs.Editor, __assign({}, this.props, eventHandler, { ref: "editor", customStyleMap: customStyleMap, customStyleFn: this.customStyleFn.bind(this), editorState: editorState, handleKeyCommand: this.handleKeyCommand.bind(this), keyBindingFn: this.handleKeyBinding.bind(this), onChange: this.setEditorState.bind(this), blockStyleFn: this.getBlockStyle.bind(this), blockRenderMap: blockRenderMap, handlePastedText: this.handlePastedText, blockRendererFn: this.blockRendererFn.bind(this) })), this.props.children));
 	    };
@@ -61619,21 +61618,30 @@ webpackJsonp([0,1],[
 	function noop(args) {}
 	function getApplyFontStyleFunc(prefix, callbacks) {
 	    return function applyStyle(styleName) {
+	        var needFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	        var getEditorState = callbacks.getEditorState,
 	            setEditorState = callbacks.setEditorState;
 	
 	        var editorState = getEditorState();
 	        var contentState = editorState.getCurrentContent();
 	        var selection = editorState.getSelection();
-	        console.log('>> selection', selection.toSource());
 	        var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(editorState);
+	        if (selection.isCollapsed()) {
+	            currentStyle.forEach(function (style) {
+	                if (style.indexOf('' + prefix) !== -1 && style !== styleName) {
+	                    editorState = _draftJs.RichUtils.toggleInlineStyle(editorState, style);
+	                }
+	            });
+	            editorState = _draftJs.RichUtils.toggleInlineStyle(editorState, styleName);
+	            return setEditorState(editorState, true);
+	        }
 	        currentStyle.forEach(function (style) {
 	            if (style.indexOf('' + prefix) !== -1) {
 	                contentState = _draftJs.Modifier.removeInlineStyle(contentState, selection, style);
 	            }
 	        });
 	        contentState = _draftJs.Modifier.applyInlineStyle(contentState, selection, styleName);
-	        setEditorState(_draftJs.EditorState.push(editorState, contentState, 'apply-style'));
+	        setEditorState(_draftJs.EditorState.push(editorState, contentState, 'apply-style'), needFocus);
 	    };
 	}
 	function getToggleFontStyleFunc(prefix, callbacks) {
@@ -68579,7 +68587,6 @@ webpackJsonp([0,1],[
 	 */
 	
 	function getAlignOffset(region, align) {
-	  console.log('>> getAlignOffset', region);
 	  var V = align.charAt(0);
 	  var H = align.charAt(1);
 	  var w = region.width;
@@ -73362,7 +73369,7 @@ webpackJsonp([0,1],[
 	            var color = _ref.color;
 	
 	            var colorString = color.substring(1);
-	            applyStyle('' + PREFIX + colorString);
+	            applyStyle('' + PREFIX + colorString, true);
 	        }
 	        function customStyleFn(styleSet) {
 	            return styleSet.map(function (style) {
@@ -73384,12 +73391,12 @@ webpackJsonp([0,1],[
 	            component: function component(props) {
 	                var editorState = callbacks.getEditorState();
 	                var currentStyle = getCurrentInlineStyle(editorState);
-	                console.log('>> currentStyle', currentStyle.toSource());
+	                console.log('>> currentStyle', editorState.getCurrentInlineStyle().toSource());
 	                var currentFontColor = currentStyle && currentStyle.find(function (item) {
 	                    return item.indexOf('' + PREFIX) !== -1;
 	                });
 	                var fontColor = currentFontColor ? currentFontColor.substring(PREFIX.length) : defaultFontColor;
-	                return React.createElement(_ColorPickerPanel2.default, { defaultColor: '#' + defaultFontColor, animation: "slide-up", color: '#' + fontColor, onChange: changeSelect }, React.createElement(_ColorPickerBtn2.default, null));
+	                return React.createElement(_ColorPickerPanel2.default, { defaultColor: '#' + defaultFontColor, animation: "slide-up", color: '#' + fontColor, onChange: changeSelect }, React.createElement(_ColorPickerBtn2.default, { style: { backgroundColor: '#' + fontColor } }));
 	            }
 	        };
 	    }
@@ -73466,6 +73473,9 @@ webpackJsonp([0,1],[
 	                }
 	            }
 	        };
+	        _this.reset = function () {
+	            _this.pickColor(_this.getDefaultColor(), true);
+	        };
 	        _this.onVisibleChange = function (open) {
 	            _this.setState({ open: open }, function () {
 	                if (open) {
@@ -73479,7 +73489,7 @@ webpackJsonp([0,1],[
 	            var ele = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'li';
 	
 	            var Ele = ele;
-	            return React.createElement(Ele, { className: "color-picker-cell", key: idx }, React.createElement("a", { tabIndex: 0, onClick: function onClick(e) {
+	            return React.createElement(Ele, { className: "color-picker-cell", key: idx }, React.createElement("a", { tabIndex: 0, onMouseDown: function onMouseDown(e) {
 	                    _this.pickColor(color, true);e.preventDefault();
 	                } }, React.createElement("canvas", { className: "color-picker-celldiv", ref: function ref(ele) {
 	                    return _this._canvas[color] = ele;
@@ -73499,10 +73509,6 @@ webpackJsonp([0,1],[
 	        return props.defaultColor || '#000';
 	    };
 	
-	    ColorPickerPanel.prototype.reset = function reset() {
-	        this.pickColor(this.getDefaultColor());
-	    };
-	
 	    ColorPickerPanel.prototype.pickColor = function pickColor(currentColor) {
 	        var closeModal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
@@ -73519,7 +73525,7 @@ webpackJsonp([0,1],[
 	        if (!this._pickerElement) {
 	            this._pickerElement = React.createElement("div", { className: "color-picker-panel", ref: function ref(ele) {
 	                    return _this2.pickerPanelInstance = ele;
-	                } }, React.createElement("div", { className: "color-picker-color-auto", onClick: this.reset }, React.createElement("ul", null, this.renderColorPickerCell('#000', 0, '自动'))), React.createElement("div", { className: "color-picker-first-row" }, React.createElement("ul", null, newArray(10, function (_, idx) {
+	                } }, React.createElement("div", { className: "color-picker-color-auto", onMouseDown: this.reset }, React.createElement("ul", null, this.renderColorPickerCell('#000', 0, '自动'))), React.createElement("div", { className: "color-picker-first-row" }, React.createElement("ul", null, newArray(10, function (_, idx) {
 	                return _this2.renderColorPickerCell('#' + ColorSet[idx], idx + 1);
 	            }))), React.createElement("table", null, React.createElement("tbody", null, newArray(5, function (_, row) {
 	                return React.createElement("tr", { className: "color-picker-compactrow", key: row }, newArray(10, function (_, idx) {
