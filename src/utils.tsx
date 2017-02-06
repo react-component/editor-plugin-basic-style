@@ -37,7 +37,8 @@ export function getApplyFontStyleFunc(prefix, callbacks) {
 export function getToggleFontStyleFunc(prefix, callbacks) {
   return function toggleStyle(styleName: string) {
     const { getEditorState, setEditorState } = callbacks;
-    let editorState = getEditorState();
+    let editorState = getEditorState(true);
+    const selection = editorState.getSelection();
     const currentStyle = getCurrentInlineStyle(editorState);
 
     currentStyle.forEach( style => {
@@ -46,6 +47,10 @@ export function getToggleFontStyleFunc(prefix, callbacks) {
       }
     });
     editorState = RichUtils.toggleInlineStyle(editorState, styleName);
+
+    if (selection.isCollapsed()) {
+     return setEditorState(editorState, true);
+    }
 
     setEditorState(editorState);
   }

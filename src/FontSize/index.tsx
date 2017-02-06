@@ -34,12 +34,18 @@ const FontSize = {
     const callbacks = {
       getEditorState: noop,
       setEditorState: noop,
+      setInlineStyleOverride: noop,
     };
 
     const toggleStyle = getToggleFontStyleFunc(PREFIX, callbacks);
 
     function changeSelect({key}) {
-      toggleStyle(`${PREFIX}${key}`);
+      const applyStyle = () => toggleStyle(`${PREFIX}${key}`);
+      if (callbacks.getEditorState().getSelection().isCollapsed()) {
+        setTimeout(applyStyle, 0);
+      } else {
+        applyStyle();
+      }
     }
 
     return {
@@ -59,15 +65,17 @@ const FontSize = {
           label: fontSizeNumber + 'px'
         };
 
-        return <RcSelect
-          labelInValue
-          prefixCls={`${config.prefixCls}-select`}
-          onChange={changeSelect}
-          style={{width: 80}}
-          value={value}
-        >
-          {options}
-        </RcSelect>
+        return <span onClick={(ev) => { ev.preventDefault(); ev.stopPropagation();}} >
+            <RcSelect
+            labelInValue
+            prefixCls={`${config.prefixCls}-select`}
+            onChange={changeSelect}
+            style={{width: 80}}
+            value={value}
+          >
+            {options}
+          </RcSelect>
+        </span>
       }
     }
   }
