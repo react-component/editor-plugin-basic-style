@@ -62357,6 +62357,10 @@ webpackJsonp([0,1],[
 	
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 	
+	var _setImmediate = __webpack_require__(250);
+	
+	var _setImmediate2 = _interopRequireDefault(_setImmediate);
+	
 	var _utils = __webpack_require__(319);
 	
 	var _rcEditorUtils = __webpack_require__(321);
@@ -62404,7 +62408,7 @@ webpackJsonp([0,1],[
 	                return toggleStyle('' + PREFIX + key);
 	            };
 	            if (callbacks.getEditorState().getSelection().isCollapsed()) {
-	                setTimeout(applyStyle, 0);
+	                (0, _setImmediate2.default)(applyStyle);
 	            } else {
 	                applyStyle();
 	            }
