@@ -411,6 +411,11 @@ webpackJsonp([0,1],[
 	    };
 	
 	    EditorCore.prototype.getEditorState = function getEditorState() {
+	        var needFocus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	
+	        if (needFocus) {
+	            this.refs.editor.focus();
+	        }
 	        return this.state.editorState;
 	    };
 	
@@ -427,6 +432,7 @@ webpackJsonp([0,1],[
 	            if (plugin.onChange) {
 	                var updatedEditorState = plugin.onChange(newEditorState);
 	                if (updatedEditorState) {
+	                    console.log('>> updatedEditorState', updatedEditorState.getSelection().get('hasFocus'));
 	                    newEditorState = updatedEditorState;
 	                }
 	            }
@@ -436,9 +442,7 @@ webpackJsonp([0,1],[
 	        }
 	        if (!this.controlledMode) {
 	            this.setState({ editorState: newEditorState }, focusEditor ? function () {
-	                return setTimeout(function () {
-	                    return _this6.refs.editor.focus();
-	                }, 100);
+	                return _this6.refs.editor.focus();
 	            } : noop);
 	        }
 	    };
@@ -34575,7 +34579,7 @@ webpackJsonp([0,1],[
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule editOnBlur
-	 * 
+	 *
 	 */
 	
 	'use strict';
@@ -34588,6 +34592,7 @@ webpackJsonp([0,1],[
 	var isWebKit = UserAgent.isEngine('WebKit');
 	
 	function editOnBlur(editor, e) {
+	  console.log('>> editOnBlur', editor);
 	  // Webkit has a bug in which blurring a contenteditable by clicking on
 	  // other active elements will trigger the `blur` event but will not remove
 	  // the DOM selection from the contenteditable. We therefore force the
@@ -44276,7 +44281,7 @@ webpackJsonp([0,1],[
 	
 	var _lodash = __webpack_require__(314);
 	
-	var _Immutable = __webpack_require__(305);
+	var _immutable = __webpack_require__(305);
 	
 	function compose() {
 	    for (var _len = arguments.length, argument = Array(_len), _key = 0; _key < _len; _key++) {
@@ -44335,10 +44340,10 @@ webpackJsonp([0,1],[
 	        text: text != null ? text : '',
 	        key: key != null ? key : (0, _draftJs.genKey)(),
 	        data: null,
-	        characterList: (0, _Immutable.List)([])
+	        characterList: (0, _immutable.List)([])
 	    };
 	    if (data) {
-	        blockSpec.data = (0, _Immutable.fromJS)(data);
+	        blockSpec.data = (0, _immutable.fromJS)(data);
 	    }
 	    if (inlineStyles || entityData) {
 	        var entityKey = void 0;
@@ -44352,9 +44357,9 @@ webpackJsonp([0,1],[
 	        } else {
 	            entityKey = null;
 	        }
-	        var style = (0, _Immutable.OrderedSet)(inlineStyles || []);
+	        var style = (0, _immutable.OrderedSet)(inlineStyles || []);
 	        var charData = _draftJs.CharacterMetadata.create({ style: style, entityKey: entityKey });
-	        blockSpec.characterList = (0, _Immutable.List)((0, _Immutable.Repeat)(charData, text.length));
+	        blockSpec.characterList = (0, _immutable.List)((0, _immutable.Repeat)(charData, text.length));
 	    }
 	    return new _draftJs.ContentBlock(blockSpec);
 	};
@@ -44377,12 +44382,12 @@ webpackJsonp([0,1],[
 	            key: (0, _draftJs.genKey)(),
 	            type: 'image-block',
 	            text: ' ',
-	            characterList: (0, _Immutable.List)((0, _Immutable.Repeat)(charData, charData.count()))
+	            characterList: (0, _immutable.List)((0, _immutable.Repeat)(charData, charData.count()))
 	        }), new _draftJs.ContentBlock({
 	            key: (0, _draftJs.genKey)(),
 	            type: 'unstyled',
 	            text: '',
-	            characterList: (0, _Immutable.List)()
+	            characterList: (0, _immutable.List)()
 	        })];
 	        return contentBlocks.concat(fragmentArray);
 	    }, []);
@@ -61649,7 +61654,8 @@ webpackJsonp([0,1],[
 	        var getEditorState = callbacks.getEditorState,
 	            setEditorState = callbacks.setEditorState;
 	
-	        var editorState = getEditorState();
+	        var editorState = getEditorState(true);
+	        var selection = editorState.getSelection();
 	        var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(editorState);
 	        currentStyle.forEach(function (style) {
 	            if (style.indexOf('' + prefix) !== -1 && style !== styleName) {
@@ -61657,6 +61663,9 @@ webpackJsonp([0,1],[
 	            }
 	        });
 	        editorState = _draftJs.RichUtils.toggleInlineStyle(editorState, styleName);
+	        if (selection.isCollapsed()) {
+	            return setEditorState(editorState, true);
+	        }
 	        setEditorState(editorState);
 	    };
 	}
@@ -62384,13 +62393,21 @@ webpackJsonp([0,1],[
 	    constructor: function constructor(config) {
 	        var callbacks = {
 	            getEditorState: _utils.noop,
-	            setEditorState: _utils.noop
+	            setEditorState: _utils.noop,
+	            setInlineStyleOverride: _utils.noop
 	        };
 	        var toggleStyle = (0, _utils.getToggleFontStyleFunc)(PREFIX, callbacks);
 	        function changeSelect(_ref) {
 	            var key = _ref.key;
 	
-	            toggleStyle('' + PREFIX + key);
+	            var applyStyle = function applyStyle() {
+	                return toggleStyle('' + PREFIX + key);
+	            };
+	            if (callbacks.getEditorState().getSelection().isCollapsed()) {
+	                setTimeout(applyStyle, 0);
+	            } else {
+	                applyStyle();
+	            }
 	        }
 	        return {
 	            name: 'fontSize',
@@ -62410,7 +62427,9 @@ webpackJsonp([0,1],[
 	                    key: fontSizeNumber + '',
 	                    label: fontSizeNumber + 'px'
 	                };
-	                return React.createElement(_rcSelect2.default, { labelInValue: true, prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80 }, value: value }, options);
+	                return React.createElement("span", { onClick: function onClick(ev) {
+	                        ev.preventDefault();ev.stopPropagation();
+	                    } }, React.createElement(_rcSelect2.default, { labelInValue: true, prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80 }, value: value }, options));
 	            }
 	        };
 	    }
