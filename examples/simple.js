@@ -61716,7 +61716,7 @@ webpackJsonp([0,1],[
 	            entityKey = contentState.getLastCreatedEntityKey();
 	        }
 	        if (selection.isCollapsed()) {
-	            replacedContent = _draftJs.Modifier.insertText(editorState.getCurrentContent(), selection, ' ', {}, active ? null : entityKey);
+	            replacedContent = _draftJs.Modifier.insertText(editorState.getCurrentContent(), selection, ' ', null, active ? null : entityKey);
 	        } else {
 	            replacedContent = _draftJs.Modifier.applyEntity(editorState.getCurrentContent(), selection, entityKey);
 	        }
