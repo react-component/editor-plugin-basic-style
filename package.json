@@ -1,6 +1,6 @@
 {
   "name": "rc-editor-plugin-basic-style",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "editor-plugin-basic-style ui component for react",
   "keywords": [
     "react",
@@ -50,15 +50,15 @@
     "react": "15.x",
     "react-addons-test-utils": "15.x",
     "react-dom": "15.x",
-    "draft-js": "~0.10.0",
-    "rc-editor-core": "0.6.0"
+    "draft-js": "~0.10.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "draft-js": "~0.10.0",
+    "fbjs": "^0.8.9",
     "immutable": "^3.8.1",
     "rc-color-picker": "^1.1.0",
-    "rc-editor-core": "~0.6.12",
+    "rc-editor-core": "~0.6.17",
     "rc-editor-utils": "~0.1.0",
     "rc-select": "^6.4.6",
     "rc-trigger": "^1.8.1"

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import RcSelect from 'rc-select';
+import setImmediate from 'fbjs/lib/setImmediate';
 import { Entity, DraftInlineStyle } from 'draft-js';
 import { noop, getToggleFontStyleFunc } from '../utils';
 import  editorUtils from 'rc-editor-utils';
 const { getCurrentInlineStyle, getCurrentEntity } = editorUtils;
 
 declare module 'rc-select' {
-  interface Option {};
+  interface Option {}
 }
+
 const Option = RcSelect.Option;
 
 const sizeArray = [];
@@ -42,7 +44,7 @@ const FontSize = {
     function changeSelect({key}) {
       const applyStyle = () => toggleStyle(`${PREFIX}${key}`);
       if (callbacks.getEditorState().getSelection().isCollapsed()) {
-        setTimeout(applyStyle, 0);
+        setImmediate(applyStyle);
       } else {
         applyStyle();
       }

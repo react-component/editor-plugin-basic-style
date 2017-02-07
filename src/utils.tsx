@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Entity, RichUtils, Modifier, EditorState, ContentState, SelectionState, EntityInstance } from 'draft-js';
+import { ContentBlock, Entity, RichUtils, Modifier, EditorState, ContentState, SelectionState, EntityInstance } from 'draft-js';
 import classnames from 'classnames';
-import {ContentBlock} from "draft-js";
 import { getCurrentInlineStyle, replaceEntityData, getSelectedBlock, getToggleStyleFunc, getToggleBlockStyleFunc } from 'rc-editor-utils';
 
 export function noop(args?: any): any {}
@@ -98,23 +97,36 @@ export function getApplyEntityFunc(callbacks) {
 }
 
 export function getToggleEntityFunc(callbacks) {
-  return function toggleEntity(entityType: string, data: Object = {}, entityMode: string = 'MUTABLE') {
+  return function toggleEntity(entityType: string, data: Object = {}, active: boolean, entityMode: string = 'MUTABLE') {
     const { getEditorState, setEditorState } = callbacks;
     const editorState = getEditorState();
     const contentState = editorState.getCurrentContent();
     const selection = editorState.getSelection();
+    let replacedContent: ContentState = contentState;
+
     let entityKey = null;
     const currentEntity = getCurrentEntity(editorState);
 
-    if (!currentEntity || contentState.getEntity(currentEntity).getType() !== entityType) {
+    if (!currentEntity || contentState.getEntity(currentEntity).getType() !== entityType || (selection.isCollapsed() && !active)) {
       contentState.createEntity(entityType, entityMode, data);
       entityKey = contentState.getLastCreatedEntityKey();
     }
-    const replacedContent = Modifier.applyEntity(
-      editorState.getCurrentContent(),
-      selection,
-      entityKey
-    );
+
+    if (selection.isCollapsed()) {
+      replacedContent = Modifier.insertText(
+        editorState.getCurrentContent(),
+        selection,
+        ' ',
+        {},
+        active ? null : entityKey,
+      );
+    } else {
+      replacedContent = Modifier.applyEntity(
+        editorState.getCurrentContent(),
+        selection,
+        entityKey
+      );
+    }
 
     return setEditorState(EditorState.push(editorState, replacedContent, 'toggle-block'));
   }

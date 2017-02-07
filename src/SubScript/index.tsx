@@ -34,7 +34,7 @@ const SubScript = {
           ['editor-icon-subscript']: true,
           'active': isSuperScript
         });
-        return <span onMouseDown={() => toggleBlock('subscript', { export: exportFunction })} className={classNames} />
+        return <span onMouseDown={() => toggleBlock('subscript', { export: exportFunction }, isSuperScript)} className={classNames} />
       }
     }
   },
