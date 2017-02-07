@@ -122,6 +122,10 @@ webpackJsonp([0,1],[
 	
 	var _immutable = __webpack_require__(305);
 	
+	var _setImmediate = __webpack_require__(250);
+	
+	var _setImmediate2 = _interopRequireDefault(_setImmediate);
+	
 	var _Toolbar = __webpack_require__(306);
 	
 	var _ConfigStore = __webpack_require__(309);
@@ -424,15 +428,11 @@ webpackJsonp([0,1],[
 	
 	        var focusEditor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 	
-	        if (!editorState.getSelection().get('hasFocus')) {
-	            console.log(editorState.getSelection().toSource());
-	        }
 	        var newEditorState = editorState;
 	        this.getPlugins().forEach(function (plugin) {
 	            if (plugin.onChange) {
 	                var updatedEditorState = plugin.onChange(newEditorState);
 	                if (updatedEditorState) {
-	                    console.log('>> updatedEditorState', updatedEditorState.getSelection().get('hasFocus'));
 	                    newEditorState = updatedEditorState;
 	                }
 	            }
@@ -442,7 +442,9 @@ webpackJsonp([0,1],[
 	        }
 	        if (!this.controlledMode) {
 	            this.setState({ editorState: newEditorState }, focusEditor ? function () {
-	                return _this6.refs.editor.focus();
+	                return (0, _setImmediate2["default"])(function () {
+	                    return _this6.refs.editor.focus();
+	                });
 	            } : noop);
 	        }
 	    };
@@ -34579,7 +34581,7 @@ webpackJsonp([0,1],[
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
 	 * @providesModule editOnBlur
-	 *
+	 * 
 	 */
 	
 	'use strict';
@@ -34592,7 +34594,6 @@ webpackJsonp([0,1],[
 	var isWebKit = UserAgent.isEngine('WebKit');
 	
 	function editOnBlur(editor, e) {
-	  console.log('>> editOnBlur', editor);
 	  // Webkit has a bug in which blurring a contenteditable by clicking on
 	  // other active elements will trigger the `blur` event but will not remove
 	  // the DOM selection from the contenteditable. We therefore force the
@@ -44118,27 +44119,24 @@ webpackJsonp([0,1],[
 	                    return '<span>' + encodedContent + '</span>';
 	                }).join('');
 	                if (entityKey) {
-	                    var _ret2 = function () {
+	                    (function () {
 	                        var entity = contentState.getEntity(entityKey);
 	                        var entityData = entity.getData();
 	                        if (entityData && entityData["export"]) {
-	                            return {
-	                                v: entityData["export"](content, entityData)
-	                            };
-	                        }
-	                        var HTMLText = '';
-	                        toHTMLList.forEach(function (toHTML) {
-	                            var text = toHTML(rawContent, entity, contentState);
-	                            if (text) {
-	                                HTMLText = text;
+	                            resultText += entityData["export"](content, entityData);
+	                        } else {
+	                            var HTMLText = '';
+	                            toHTMLList.forEach(function (toHTML) {
+	                                var text = toHTML(rawContent, entity, contentState);
+	                                if (text) {
+	                                    HTMLText = text;
+	                                }
+	                            });
+	                            if (HTMLText) {
+	                                resultText += HTMLText;
 	                            }
-	                        });
-	                        if (HTMLText) {
-	                            resultText += HTMLText;
 	                        }
-	                    }();
-	
-	                    if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	                    })();
 	                } else {
 	                    resultText += content;
 	                }
@@ -61702,20 +61700,26 @@ webpackJsonp([0,1],[
 	function getToggleEntityFunc(callbacks) {
 	    return function toggleEntity(entityType) {
 	        var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	        var entityMode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'MUTABLE';
+	        var active = arguments[2];
+	        var entityMode = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'MUTABLE';
 	        var getEditorState = callbacks.getEditorState,
 	            setEditorState = callbacks.setEditorState;
 	
 	        var editorState = getEditorState();
 	        var contentState = editorState.getCurrentContent();
 	        var selection = editorState.getSelection();
+	        var replacedContent = contentState;
 	        var entityKey = null;
 	        var currentEntity = getCurrentEntity(editorState);
-	        if (!currentEntity || contentState.getEntity(currentEntity).getType() !== entityType) {
+	        if (!currentEntity || contentState.getEntity(currentEntity).getType() !== entityType || selection.isCollapsed() && !active) {
 	            contentState.createEntity(entityType, entityMode, data);
 	            entityKey = contentState.getLastCreatedEntityKey();
 	        }
-	        var replacedContent = _draftJs.Modifier.applyEntity(editorState.getCurrentContent(), selection, entityKey);
+	        if (selection.isCollapsed()) {
+	            replacedContent = _draftJs.Modifier.insertText(editorState.getCurrentContent(), selection, ' ', {}, active ? null : entityKey);
+	        } else {
+	            replacedContent = _draftJs.Modifier.applyEntity(editorState.getCurrentContent(), selection, entityKey);
+	        }
 	        return setEditorState(_draftJs.EditorState.push(editorState, replacedContent, 'toggle-block'));
 	    };
 	}
@@ -62261,7 +62265,7 @@ webpackJsonp([0,1],[
 	                var isSuperScript = currentEntityKey ? contentState.getEntity(currentEntityKey).getType() === 'superscript' : false;
 	                var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-superscript', true), _defineProperty(_classnames, 'active', isSuperScript), _classnames));
 	                return React.createElement("span", { onMouseDown: function onMouseDown() {
-	                        return toggleBlock('superscript', { export: exportFunction });
+	                        return toggleBlock('superscript', { export: exportFunction }, isSuperScript);
 	                    }, className: classNames });
 	            }
 	        };
@@ -62329,7 +62333,7 @@ webpackJsonp([0,1],[
 	                var isSuperScript = currentEntityKey ? contentState.getEntity(currentEntityKey).getType() === 'subscript' : false;
 	                var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-subscript', true), _defineProperty(_classnames, 'active', isSuperScript), _classnames));
 	                return React.createElement("span", { onMouseDown: function onMouseDown() {
-	                        return toggleBlock('subscript', { export: exportFunction });
+	                        return toggleBlock('subscript', { export: exportFunction }, isSuperScript);
 	                    }, className: classNames });
 	            }
 	        };
