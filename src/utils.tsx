@@ -117,7 +117,7 @@ export function getToggleEntityFunc(callbacks) {
         editorState.getCurrentContent(),
         selection,
         ' ',
-        {},
+        null,
         active ? null : entityKey,
       );
     } else {
