@@ -61559,7 +61559,8 @@ webpackJsonp([0,1],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Bold = (0, _utils.inlineStyleComponentFactory)('bold');
+	var Bold = (0, _utils.inlineStyleComponentFactory)('bold'); // export this package's api
+	
 	var Italic = (0, _utils.inlineStyleComponentFactory)('italic');
 	var Underline = (0, _utils.inlineStyleComponentFactory)('underline');
 	var StrikeThrough = (0, _utils.inlineStyleComponentFactory)('strikethrough');
@@ -61580,6 +61581,9 @@ webpackJsonp([0,1],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	exports.noop = noop;
 	exports.getApplyFontStyleFunc = getApplyFontStyleFunc;
 	exports.getToggleFontStyleFunc = getToggleFontStyleFunc;
@@ -61593,7 +61597,7 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _draftJs = __webpack_require__(162);
 	
@@ -61605,19 +61609,8 @@ webpackJsonp([0,1],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-	    for (var s, i = 1, n = arguments.length; i < n; i++) {
-	        s = arguments[i];
-	        for (var p in s) {
-	            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-	        }
-	    }
-	    return t;
-	};
 	function noop(args) {}
 	function getApplyFontStyleFunc(prefix, callbacks) {
 	    return function applyStyle(styleName) {
@@ -61770,7 +61763,7 @@ webpackJsonp([0,1],[
 	
 	                    var currentStyle = (0, _rcEditorUtils.getCurrentInlineStyle)(callbacks.getEditorState());
 	                    var classNames = (0, _classnames4.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-' + name, true), _defineProperty(_classnames, 'active', currentStyle.has(upperName)), _classnames));
-	                    return React.createElement("span", { onMouseDown: function onMouseDown(e) {
+	                    return _react2.default.createElement('span', { onMouseDown: function onMouseDown(e) {
 	                            toggleStyle(upperName);e.preventDefault();
 	                        }, className: classNames });
 	                }
@@ -61789,8 +61782,9 @@ webpackJsonp([0,1],[
 	            };
 	            var blockRenderMap = _defineProperty({}, '' + name, {
 	                element: function element(props) {
-	                    return React.createElement("div", __assign({}, props, { style: style }));
+	                    return _react2.default.createElement('div', _extends({}, props, { style: style }));
 	                },
+	                elementTag: 'div',
 	                style: style
 	            });
 	            var toggleBlockStyle = (0, _rcEditorUtils.getToggleBlockStyleFunc)(callbacks);
@@ -61803,7 +61797,7 @@ webpackJsonp([0,1],[
 	
 	                    var selectedBlock = (0, _rcEditorUtils.getSelectedBlock)(callbacks.getEditorState());
 	                    var classNames = (0, _classnames4.default)((_classnames2 = {}, _defineProperty(_classnames2, 'editor-icon', true), _defineProperty(_classnames2, 'editor-icon-' + name, true), _defineProperty(_classnames2, 'active', selectedBlock.getType() === name), _classnames2));
-	                    return React.createElement("span", { onMouseDown: function onMouseDown() {
+	                    return _react2.default.createElement('span', { onMouseDown: function onMouseDown() {
 	                            return toggleBlockStyle(name);
 	                        }, className: classNames });
 	                }
@@ -62181,9 +62175,9 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function noop(args) {}
 	;
@@ -62198,7 +62192,7 @@ webpackJsonp([0,1],[
 	        return {
 	            name: '|',
 	            callbacks: callbacks,
-	            component: React.createElement("span", { className: "editor-icon-split" })
+	            component: _react2.default.createElement('span', { className: 'editor-icon-split' })
 	        };
 	    },
 	
@@ -62219,7 +62213,7 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _classnames2 = __webpack_require__(320);
 	
@@ -62228,8 +62222,6 @@ webpackJsonp([0,1],[
 	var _utils = __webpack_require__(319);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -62253,7 +62245,11 @@ webpackJsonp([0,1],[
 	            decorators: [{
 	                strategy: (0, _utils.findEntities)('superscript'),
 	                component: function component(props) {
-	                    return React.createElement("sup", null, props.children);
+	                    return _react2.default.createElement(
+	                        'sup',
+	                        null,
+	                        props.children
+	                    );
 	                }
 	            }],
 	            component: function component(props) {
@@ -62264,7 +62260,7 @@ webpackJsonp([0,1],[
 	                var currentEntityKey = (0, _utils.getCurrentEntity)(editorState);
 	                var isSuperScript = currentEntityKey ? contentState.getEntity(currentEntityKey).getType() === 'superscript' : false;
 	                var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-superscript', true), _defineProperty(_classnames, 'active', isSuperScript), _classnames));
-	                return React.createElement("span", { onMouseDown: function onMouseDown() {
+	                return _react2.default.createElement('span', { onMouseDown: function onMouseDown() {
 	                        return toggleBlock('superscript', { export: exportFunction }, isSuperScript);
 	                    }, className: classNames });
 	            }
@@ -62287,7 +62283,7 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _classnames2 = __webpack_require__(320);
 	
@@ -62296,8 +62292,6 @@ webpackJsonp([0,1],[
 	var _utils = __webpack_require__(319);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -62321,7 +62315,11 @@ webpackJsonp([0,1],[
 	            decorators: [{
 	                strategy: (0, _utils.findEntities)('subscript'),
 	                component: function component(props) {
-	                    return React.createElement("sub", null, props.children);
+	                    return _react2.default.createElement(
+	                        'sub',
+	                        null,
+	                        props.children
+	                    );
 	                }
 	            }],
 	            component: function component(props) {
@@ -62332,7 +62330,7 @@ webpackJsonp([0,1],[
 	                var currentEntityKey = (0, _utils.getCurrentEntity)(editorState);
 	                var isSuperScript = currentEntityKey ? contentState.getEntity(currentEntityKey).getType() === 'subscript' : false;
 	                var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-subscript', true), _defineProperty(_classnames, 'active', isSuperScript), _classnames));
-	                return React.createElement("span", { onMouseDown: function onMouseDown() {
+	                return _react2.default.createElement('span', { onMouseDown: function onMouseDown() {
 	                        return toggleBlock('subscript', { export: exportFunction }, isSuperScript);
 	                    }, className: classNames });
 	            }
@@ -62355,7 +62353,7 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _rcSelect = __webpack_require__(335);
 	
@@ -62372,8 +62370,6 @@ webpackJsonp([0,1],[
 	var _rcEditorUtils2 = _interopRequireDefault(_rcEditorUtils);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var getCurrentInlineStyle = _rcEditorUtils2.default.getCurrentInlineStyle,
 	    getCurrentEntity = _rcEditorUtils2.default.getCurrentEntity;
@@ -62429,15 +62425,28 @@ webpackJsonp([0,1],[
 	                });
 	                var fontSizeNumber = currentFontSize ? currentFontSize.substring(PREFIX.length) : 16;
 	                var options = sizeArray.map(function (item) {
-	                    return React.createElement(Option, { key: item, value: item + '', style: { fontSize: item } }, item, "px");
+	                    return _react2.default.createElement(
+	                        Option,
+	                        { key: item, value: item + '', style: { fontSize: item } },
+	                        item,
+	                        'px'
+	                    );
 	                });
 	                var value = {
 	                    key: fontSizeNumber + '',
 	                    label: fontSizeNumber + 'px'
 	                };
-	                return React.createElement("span", { onClick: function onClick(ev) {
-	                        ev.preventDefault();ev.stopPropagation();
-	                    } }, React.createElement(_rcSelect2.default, { labelInValue: true, prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80 }, value: value }, options));
+	                return _react2.default.createElement(
+	                    'span',
+	                    { onClick: function onClick(ev) {
+	                            ev.preventDefault();ev.stopPropagation();
+	                        } },
+	                    _react2.default.createElement(
+	                        _rcSelect2.default,
+	                        { labelInValue: true, prefixCls: config.prefixCls + '-select', onChange: changeSelect, style: { width: 80, marginRight: 6 }, value: value },
+	                        options
+	                    )
+	                );
 	            }
 	        };
 	    }
@@ -73358,7 +73367,7 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _ColorPickerPanel = __webpack_require__(486);
 	
@@ -73375,8 +73384,6 @@ webpackJsonp([0,1],[
 	var _ColorPickerBtn2 = _interopRequireDefault(_ColorPickerBtn);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var getCurrentInlineStyle = _rcEditorUtils2.default.getCurrentInlineStyle,
 	    getCurrentEntity = _rcEditorUtils2.default.getCurrentEntity;
@@ -73420,7 +73427,11 @@ webpackJsonp([0,1],[
 	                    return item.indexOf('' + PREFIX) !== -1;
 	                });
 	                var fontColor = currentFontColor ? currentFontColor.substring(PREFIX.length) : defaultFontColor;
-	                return React.createElement(_ColorPickerPanel2.default, { prefixCls: config.prefixCls + '-editor', defaultColor: '#' + defaultFontColor, animation: "slide-up", color: '#' + fontColor, onChange: changeSelect }, React.createElement(_ColorPickerBtn2.default, { style: { backgroundColor: '#' + fontColor } }));
+	                return _react2.default.createElement(
+	                    _ColorPickerPanel2.default,
+	                    { prefixCls: config.prefixCls + '-editor', defaultColor: '#' + defaultFontColor, animation: 'slide-up', color: '#' + fontColor, onChange: changeSelect },
+	                    _react2.default.createElement(_ColorPickerBtn2.default, { style: { backgroundColor: '#' + fontColor } })
+	                );
 	            }
 	        };
 	    }
@@ -73440,11 +73451,11 @@ webpackJsonp([0,1],[
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _reactDom = __webpack_require__(213);
 	
-	var ReactDOM = _interopRequireWildcard(_reactDom);
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
 	var _rcTrigger = __webpack_require__(392);
 	
@@ -73455,8 +73466,6 @@ webpackJsonp([0,1],[
 	var _placements2 = _interopRequireDefault(_placements);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 	
@@ -73504,7 +73513,7 @@ webpackJsonp([0,1],[
 	            _this.setState({ open: open }, function () {
 	                if (open) {
 	                    _this.fillCanvasColor();
-	                    ReactDOM.findDOMNode(_this.pickerPanelInstance).focus();
+	                    _reactDom2.default.findDOMNode(_this.pickerPanelInstance).focus();
 	                }
 	            });
 	        };
@@ -73513,11 +73522,20 @@ webpackJsonp([0,1],[
 	            var ele = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'li';
 	
 	            var Ele = ele;
-	            return React.createElement(Ele, { className: _this.props.prefixCls + '-color-picker-cell', key: idx }, React.createElement("a", { tabIndex: 0, onMouseDown: function onMouseDown(e) {
-	                    _this.pickColor(color, true);e.preventDefault();
-	                } }, React.createElement("canvas", { className: _this.props.prefixCls + '-color-picker-celldiv', ref: function ref(ele) {
-	                    return _this._canvas[color] = ele;
-	                } }), text));
+	            return _react2.default.createElement(
+	                Ele,
+	                { className: _this.props.prefixCls + '-color-picker-cell', key: idx },
+	                _react2.default.createElement(
+	                    'a',
+	                    { tabIndex: 0, onMouseDown: function onMouseDown(e) {
+	                            _this.pickColor(color, true);e.preventDefault();
+	                        } },
+	                    _react2.default.createElement('canvas', { className: _this.props.prefixCls + '-color-picker-celldiv', ref: function ref(ele) {
+	                            return _this._canvas[color] = ele;
+	                        } }),
+	                    text
+	                )
+	            );
 	        };
 	        _this.state = {
 	            currentColor: _this.getDefaultColor(props),
@@ -73547,17 +73565,65 @@ webpackJsonp([0,1],[
 	        var _this2 = this;
 	
 	        if (!this._pickerElement) {
-	            this._pickerElement = React.createElement("div", { className: this.props.prefixCls + '-color-picker-panel', ref: function ref(ele) {
-	                    return _this2.pickerPanelInstance = ele;
-	                } }, React.createElement("div", { className: this.props.prefixCls + '-color-picker-color-auto', onMouseDown: this.reset }, React.createElement("ul", null, this.renderColorPickerCell('#000', 0, '自动'))), React.createElement("div", { className: this.props.prefixCls + '-color-picker-first-row' }, React.createElement("ul", null, newArray(10, function (_, idx) {
-	                return _this2.renderColorPickerCell('#' + ColorSet[idx], idx + 1);
-	            }))), React.createElement("table", null, React.createElement("tbody", null, newArray(5, function (_, row) {
-	                return React.createElement("tr", { className: _this2.props.prefixCls + '-color-picker-compactrow', key: row }, newArray(10, function (_, idx) {
-	                    return _this2.renderColorPickerCell('#' + ColorSet[idx + (row + 1) * 10], row * 10 + idx + 1, null, 'td');
-	                }));
-	            }))), React.createElement("span", null, '\u6807\u51C6\u989C\u8272'), React.createElement("div", { className: this.props.prefixCls + '-color-picker-last-row' }, React.createElement("ul", null, newArray(10, function (_, idx) {
-	                return _this2.renderColorPickerCell('#' + ColorSet[idx + 60], idx + 1);
-	            }))));
+	            this._pickerElement = _react2.default.createElement(
+	                'div',
+	                { className: this.props.prefixCls + '-color-picker-panel', ref: function ref(ele) {
+	                        return _this2.pickerPanelInstance = ele;
+	                    } },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: this.props.prefixCls + '-color-picker-color-auto', onMouseDown: this.reset },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        this.renderColorPickerCell('#000', 0, '自动')
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: this.props.prefixCls + '-color-picker-first-row' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        newArray(10, function (_, idx) {
+	                            return _this2.renderColorPickerCell('#' + ColorSet[idx], idx + 1);
+	                        })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'table',
+	                    null,
+	                    _react2.default.createElement(
+	                        'tbody',
+	                        null,
+	                        newArray(5, function (_, row) {
+	                            return _react2.default.createElement(
+	                                'tr',
+	                                { className: _this2.props.prefixCls + '-color-picker-compactrow', key: row },
+	                                newArray(10, function (_, idx) {
+	                                    return _this2.renderColorPickerCell('#' + ColorSet[idx + (row + 1) * 10], row * 10 + idx + 1, null, 'td');
+	                                })
+	                            );
+	                        })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    null,
+	                    '\u6807\u51C6\u989C\u8272'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: this.props.prefixCls + '-color-picker-last-row' },
+	                    _react2.default.createElement(
+	                        'ul',
+	                        null,
+	                        newArray(10, function (_, idx) {
+	                            return _this2.renderColorPickerCell('#' + ColorSet[idx + 60], idx + 1);
+	                        })
+	                    )
+	                )
+	            );
 	        }
 	        return this._pickerElement;
 	    };
@@ -73577,18 +73643,22 @@ webpackJsonp([0,1],[
 	
 	        var children = this.props.children;
 	        if (children) {
-	            children = React.cloneElement(children, {
+	            children = _react2.default.cloneElement(children, {
 	                ref: function ref(ele) {
 	                    return _this3.triggerInstance = ele;
 	                },
 	                unselectable: true
 	            });
 	        }
-	        return React.createElement(_rcTrigger2.default, { popup: this.getPickerElement(), popupAlign: align, builtinPlacements: _placements2.default, popupPlacement: placement, action: disabled ? [] : ['click'], destroyPopupOnHide: true, getPopupContainer: getCalendarContainer, popupStyle: style, popupAnimation: animation, popupTransitionName: transitionName, popupVisible: this.state.open, onPopupVisibleChange: this.onVisibleChange, prefixCls: prefixCls + '-color-picker' }, children);
+	        return _react2.default.createElement(
+	            _rcTrigger2.default,
+	            { popup: this.getPickerElement(), popupAlign: align, builtinPlacements: _placements2.default, popupPlacement: placement, action: disabled ? [] : ['click'], destroyPopupOnHide: true, getPopupContainer: getCalendarContainer, popupStyle: style, popupAnimation: animation, popupTransitionName: transitionName, popupVisible: this.state.open, onPopupVisibleChange: this.onVisibleChange, prefixCls: prefixCls + '-color-picker' },
+	            children
+	        );
 	    };
 	
 	    return ColorPickerPanel;
-	}(React.Component);
+	}(_react2.default.Component);
 	
 	exports.default = ColorPickerPanel;
 	
@@ -73599,7 +73669,7 @@ webpackJsonp([0,1],[
 	    onOpen: noop,
 	    onClose: noop,
 	    prefixCls: 'rc-editor',
-	    children: React.createElement("span", { className: "rc-color-picker-trigger" }),
+	    children: _react2.default.createElement('span', { className: 'rc-color-picker-trigger' }),
 	    placement: 'topLeft',
 	    style: {}
 	};
@@ -73657,11 +73727,14 @@ webpackJsonp([0,1],[
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	exports.default = ColorPickerBtn;
 	
 	var _react = __webpack_require__(5);
 	
-	var React = _interopRequireWildcard(_react);
+	var _react2 = _interopRequireDefault(_react);
 	
 	var _classnames2 = __webpack_require__(320);
 	
@@ -73669,25 +73742,19 @@ webpackJsonp([0,1],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var __assign = undefined && undefined.__assign || Object.assign || function (t) {
-	    for (var s, i = 1, n = arguments.length; i < n; i++) {
-	        s = arguments[i];
-	        for (var p in s) {
-	            if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-	        }
-	    }
-	    return t;
-	};
 	function ColorPickerBtn(props) {
 	    var _classnames;
 	
 	    var _props = Object.assign({}, props, { style: {} });
 	    var classNames = (0, _classnames3.default)((_classnames = {}, _defineProperty(_classnames, 'editor-icon', true), _defineProperty(_classnames, 'editor-icon-font-color', true), _classnames));
-	    return React.createElement("span", __assign({}, _props, { className: "editor-icon-wrapper" }), React.createElement("span", { className: classNames }), React.createElement("span", { className: "font-color-preview", style: props.style }));
+	    return _react2.default.createElement(
+	        'span',
+	        _extends({}, _props, { className: 'editor-icon-wrapper' }),
+	        _react2.default.createElement('span', { className: classNames }),
+	        _react2.default.createElement('span', { className: 'font-color-preview', style: props.style })
+	    );
 	}
 	module.exports = exports['default'];
 
