@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React  from 'react';
 import RcSelect from 'rc-select';
 import setImmediate from 'fbjs/lib/setImmediate';
 import { Entity, DraftInlineStyle } from 'draft-js';
@@ -72,7 +72,7 @@ const FontSize = {
             labelInValue
             prefixCls={`${config.prefixCls}-select`}
             onChange={changeSelect}
-            style={{width: 80}}
+            style={{width: 80, marginRight: 6}}
             value={value}
           >
             {options}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React  from 'react';
 import { ContentBlock, Entity, RichUtils, Modifier, EditorState, ContentState, SelectionState, EntityInstance } from 'draft-js';
 import classnames from 'classnames';
 import { getCurrentInlineStyle, replaceEntityData, getSelectedBlock, getToggleStyleFunc, getToggleBlockStyleFunc } from 'rc-editor-utils';
@@ -198,6 +198,7 @@ export function blockStyleComponentFactory(name: string, style) {
       const blockRenderMap = {
         [`${name}`]: {
           element: (props) => <div {...props} style={style} />,
+          elementTag: `div`,
           style,
         },
       };
