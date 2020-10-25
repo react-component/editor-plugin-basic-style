@@ -61,6 +61,6 @@
     "rc-editor-core": "~0.6.17",
     "rc-editor-utils": "~0.1.0",
     "rc-select": "^6.4.6",
-    "rc-trigger": "^1.8.1"
+    "rc-trigger": "^5.0.8"
   }
 }
