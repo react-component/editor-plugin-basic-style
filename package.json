@@ -58,7 +58,7 @@
     "fbjs": "^0.8.9",
     "immutable": "^3.8.1",
     "rc-color-picker": "^1.1.0",
-    "rc-editor-core": "~0.6.17",
+    "rc-editor-core": "~0.8.10",
     "rc-editor-utils": "~0.1.0",
     "rc-select": "^6.4.6",
     "rc-trigger": "^1.8.1"
